@@ -2,14 +2,28 @@
   "name": "vuex-socketio-plugin",
   "version": "0.0.1",
   "description": "Vuex plugin to integrate socket.io client",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run build:tsc",
+    "build:tsc": "tsc",
+    "clean": "rm -rf dist",
+    "prepublish": "npm run clean && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "author": "joe-re <joe.tialtngo@gmail.com>",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
+    "@types/socket.io-client": "^1.4.32",
     "typescript": "^2.6.2",
+    "vue": "^2.5.13",
     "vuex": "^3.0.1"
   },
   "dependencies": {
+    "eslint": "^4.15.0",
     "socket.io-client": "^2.0.4"
   }
 }
