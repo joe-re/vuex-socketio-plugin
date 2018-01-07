@@ -10,7 +10,7 @@ npm install vuex-socketio-plugin --save
 
 ## Simple Example
 
-store.js
+store.ts
 
 ```js
 import Vuex, { Store } from 'vuex'
@@ -92,7 +92,7 @@ MutationName and ActionName are prefix + EventName.
 
 > Note: In case of mutation, default socket.io events are UpperCase. Pleae ref [socket.io docs](https://socket.io/docs/) about type of default events.
 
-Both of mutation and action payload incjkludes `client` and `data` parameters.
+Both of mutation and action payload includes `client` and `data` parameters.
 `client` is socket.io instance. You can emit any event via this.
 `data` is received message. It is always array type.
 
