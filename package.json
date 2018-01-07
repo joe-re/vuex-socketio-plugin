@@ -11,6 +11,12 @@
     "prepublish": "npm run clean && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "homepage": "https://github.com/joe-re/vuex-socketio-plugin",
+  "bugs": "https://github.com/joe-re/vuex-socketio-plugin/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joe-re/vuex-socketio-plugin.git"
+  },
   "author": "joe-re <joe.tialtngo@gmail.com>",
   "license": "MIT",
   "files": [
