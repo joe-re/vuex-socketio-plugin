@@ -4,5 +4,12 @@
   "description": "Vuex plugin to integrate socket.io client",
   "main": "index.js",
   "author": "joe-re <joe.tialtngo@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^2.6.2",
+    "vuex": "^3.0.1"
+  },
+  "dependencies": {
+    "socket.io-client": "^2.0.4"
+  }
 }
