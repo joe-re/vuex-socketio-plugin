@@ -1,6 +1,6 @@
 import Vuex, { Store } from 'vuex'
 import Vue from 'vue'
-import { createWebsocketPlugin } from '../../dist/index'
+import { createSocketioPlugin } from '../../dist/index'
 import * as io from 'socket.io-client'
 
 Vue.use(Vuex)
@@ -8,7 +8,7 @@ Vue.use(Vuex)
 let _client: (typeof io.Socket) | null = null;
 export type State = { messages: string[] }
 const store = new Vuex.Store<State>({
-  plugins: [createWebsocketPlugin('http://localhost:3000')],
+  plugins: [createSocketioPlugin('http://localhost:3000')],
   state: {
     messages: []
   },

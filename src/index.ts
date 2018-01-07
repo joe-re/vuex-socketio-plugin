@@ -30,7 +30,7 @@ let clients: typeof io.Socket[] = []
 export function getClients () {
   return clients
 }
-export function createWebsocketPlugin<S> (params: string | typeof io.Socket | Array<string | typeof io.Socket>) {
+export function createSocketioPlugin<S> (params: string | typeof io.Socket | Array<string | typeof io.Socket>) {
   const payload = Array.isArray(params) ? params : [params]
   clients = payload.map(v => typeof v === 'string' ? io(v) : v)
   return (store: Store<S>) => {
