@@ -70,6 +70,20 @@ createSocketioPlugin([
 ])
 ```
 
+Prefix are set automatically to each Mutation and Action.(See [Mutation And Action](https://github.com/joe-re/vuex-socketio-plugin#mutation-and-action))
+If you want to change prefix name, you can give `actionPrefix` and `mutationPrefix` options.
+
+```
+createSocketioPlugin([
+  'http://localhost:3000/function1',
+  'http://localhost:3000/function2',
+  'http://localhost:3000/function3'
+], {
+  actionPrefix: '/socket/soc_',
+  mutationPrefix: '/socket/SOC_'
+})
+```
+
 ### Mutation and Action
 
 When receive SocketIO event, vuex-socketio-plugin triggered Mutation and Action.
@@ -95,6 +109,7 @@ MutationName and ActionName are prefix + EventName.
 Both of mutation and action payload includes `client` and `data` parameters.
 `client` is socket.io instance. You can emit any event via this.
 `data` is received message. It is always array type.
+
 
 ### Socket.io Namespaces and Vuex Namespaced Modules
 
