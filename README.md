@@ -79,8 +79,8 @@ createSocketioPlugin([
   'http://localhost:3000/function2',
   'http://localhost:3000/function3'
 ], {
-  actionPrefix: '/socket/soc_',
-  mutationPrefix: '/socket/SOC_'
+  actionPrefix: 'socket/soc_',
+  mutationPrefix: 'socket/SOC_'
 })
 ```
 
