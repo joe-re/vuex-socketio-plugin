@@ -12,15 +12,15 @@ function findName (params: { nameList: { [key: string]: Function }, nsp: string,
   return names.find(v => !!nameList[v])
 }
 
-function callStoreAction<S> (client: typeof io.Socket, store: Store<S>, packet: Packet) {
-  const actionName = findName({ nameList: (store as any)._actions, nsp: packet.nsp, wsMessageName: packet.data[0], prefix: 'socket_' })
+function callStoreAction<S> (client: typeof io.Socket, store: Store<S>, packet: Packet, prefix = 'socket_') {
+  const actionName = findName({ nameList: (store as any)._actions, nsp: packet.nsp, wsMessageName: packet.data[0], prefix })
   if (actionName) {
     store.dispatch(actionName, { data: [...packet.data.slice(1)], client })
   }
 }
 
-function callStoreMutation<S> (client: typeof io.Socket, store: Store<S>, packet: Packet) {
-  const mutationName = findName({ nameList: (store as any)._mutations, nsp: packet.nsp, wsMessageName: packet.data[0], prefix: 'SOCKET_' })
+function callStoreMutation<S> (client: typeof io.Socket, store: Store<S>, packet: Packet, prefix = 'SOCKET_') {
+  const mutationName = findName({ nameList: (store as any)._mutations, nsp: packet.nsp, wsMessageName: packet.data[0], prefix })
   if (mutationName) {
     store.commit(mutationName, { data: [...packet.data.slice(1)], client })
   }
@@ -30,16 +30,19 @@ let clients: typeof io.Socket[] = []
 export function getClients () {
   return clients
 }
-export function createSocketioPlugin<S> (params: string | typeof io.Socket | Array<string | typeof io.Socket>) {
+export type Options = { actionPrefix?: string, mutationPrefix?: string}
+export function createSocketioPlugin<S> (params: string | typeof io.Socket | Array<string | typeof io.Socket>, options?: Options) {
   const payload = Array.isArray(params) ? params : [params]
   clients = payload.map(v => typeof v === 'string' ? io(v) : v)
+  const actionPrefix = options && options.actionPrefix
+  const mutationPrefix = options && options.mutationPrefix
   return (store: Store<S>) => {
     clients.forEach(client => {
       const onevent = (client as any).onevent;
       (client as any).onevent = (packet: Packet) => {
         onevent.call(client, packet)
-        callStoreAction(client, store, packet)
-        callStoreMutation(client, store, packet)
+        callStoreAction(client, store, packet, actionPrefix)
+        callStoreMutation(client, store, packet, mutationPrefix)
       };
       [
         'connect',
@@ -57,8 +60,8 @@ export function createSocketioPlugin<S> (params: string | typeof io.Socket | Arr
         'pong'
       ].forEach((value) => {
         client.on(value, (_data: any) => {
-          callStoreAction(client, store, { nsp: client.nsp, data: [value] })
-          callStoreMutation(client, store, { nsp: client.nsp, data: [value.toUpperCase()] })
+          callStoreAction(client, store, { nsp: client.nsp, data: [value] }, actionPrefix)
+          callStoreMutation(client, store, { nsp: client.nsp, data: [value.toUpperCase()] }, mutationPrefix)
         })
       })
     })
