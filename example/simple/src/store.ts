@@ -1,6 +1,6 @@
 import Vuex, { Store } from 'vuex'
 import Vue from 'vue'
-import { createSocketioPlugin } from '../../dist/index'
+import { createSocketioPlugin } from '../../../src/index'
 import * as io from 'socket.io-client'
 
 Vue.use(Vuex)
