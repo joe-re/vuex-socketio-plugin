@@ -1,6 +1,6 @@
 {
   "name": "vuex-socketio-plugin",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Vuex plugin to integrate socket.io client",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
