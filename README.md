@@ -71,7 +71,7 @@ createSocketioPlugin([
 ```
 
 Prefix are set automatically to each Mutation and Action.(See [Mutation And Action](https://github.com/joe-re/vuex-socketio-plugin#mutation-and-action))
-If you want to change prefix name, you can give `actionPrefix` and `mutationPrefix` options.
+If you want to change prefix name, you can give it as `actionPrefix` and `mutationPrefix` options.
 
 ```
 createSocketioPlugin([
@@ -86,10 +86,9 @@ createSocketioPlugin([
 
 ### Mutation and Action
 
-When receive SocketIO event, vuex-socketio-plugin triggered Mutation and Action.
-MutationName is added prefix `SOCKET_`.
-ActionName is added prefix `socket_`.
-MutationName and ActionName are prefix + EventName.
+When it receives any SocketIO events, vuex-socketio-plugin triggers Mutation and Action.
+`SOCKET_` prefix is added on MutationName, prefix `socket_` is added on ActionName .
+(MutationName and ActionName consists from prefix + EventName.)
 
 ```js
   mutations: {
@@ -138,7 +137,7 @@ Because this is a convention you don't have to set any configtation. It is trigg
 
 ### getClients
 
-If you get socket.io clients on your any context, you can use getClients API.
+If you want to get a socket.io client, you can use `getClients` .
 
 Example
 ```js
