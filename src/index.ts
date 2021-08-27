@@ -1,4 +1,4 @@
-import * as io from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 import { Store } from 'vuex'
 
 type Packet = { nsp: string, data: Array<any> }
@@ -12,26 +12,26 @@ function findName (params: { nameList: { [key: string]: Function }, nsp: string,
   return names.find(v => !!nameList[v])
 }
 
-function callStoreAction<S> (client: typeof io.Socket, store: Store<S>, packet: Packet, prefix = 'socket_') {
+function callStoreAction<S> (client: Socket, store: Store<S>, packet: Packet, prefix = 'socket_') {
   const actionName = findName({ nameList: (store as any)._actions, nsp: packet.nsp, wsMessageName: packet.data[0], prefix })
   if (actionName) {
     store.dispatch(actionName, { data: [...packet.data.slice(1)], client })
   }
 }
 
-function callStoreMutation<S> (client: typeof io.Socket, store: Store<S>, packet: Packet, prefix = 'SOCKET_') {
+function callStoreMutation<S> (client: Socket, store: Store<S>, packet: Packet, prefix = 'SOCKET_') {
   const mutationName = findName({ nameList: (store as any)._mutations, nsp: packet.nsp, wsMessageName: packet.data[0], prefix })
   if (mutationName) {
     store.commit(mutationName, { data: [...packet.data.slice(1)], client })
   }
 }
 
-let clients: typeof io.Socket[] = []
+let clients: Socket[] = []
 export function getClients () {
   return clients
 }
 export type Options = { actionPrefix?: string, mutationPrefix?: string}
-export function createSocketioPlugin<S> (params: string | typeof io.Socket | Array<string | typeof io.Socket>, options?: Options) {
+export function createSocketioPlugin<S> (params: string | Socket | Array<string | Socket>, options?: Options) {
   const payload = Array.isArray(params) ? params : [params]
   clients = payload.map(v => typeof v === 'string' ? io(v) : v)
   const actionPrefix = options && options.actionPrefix
@@ -60,8 +60,8 @@ export function createSocketioPlugin<S> (params: string | typeof io.Socket | Arr
         'pong'
       ].forEach((value) => {
         client.on(value, (_data: any) => {
-          callStoreAction(client, store, { nsp: client.nsp, data: [value] }, actionPrefix)
-          callStoreMutation(client, store, { nsp: client.nsp, data: [value.toUpperCase()] }, mutationPrefix)
+          callStoreAction(client, store, { nsp: (client as any).nsp, data: [value] }, actionPrefix)
+          callStoreMutation(client, store, { nsp: (client as any).nsp, data: [value.toUpperCase()] }, mutationPrefix)
         })
       })
     })
